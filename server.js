@@ -15,8 +15,8 @@ app.get('/greetings/:ali', (req, res) => {
 //-------------------- 2. Rolling the Dice-----------------------------------//
 
 app.get('/roll/:random', (req, res) => {
- const random = Math.floor(Math.random() *req.params.random ) + 1;
- res.send(`You rolled a ${random}`);
+  const random = Math.floor(Math.random() * req.params.random) + 1;
+  res.send(`You rolled a ${random}`);
 })
 
 
@@ -32,10 +32,10 @@ app.get('/collectibles/:index', (req, res) => {
   const collectible = collectibles[idx];
   if (collectible) {
     res.send(`You want the ${collectible.name} for $${collectible.price}`);
-    } else {
-      res.status(404).send('This item is not yet in stock. Check back soon!');
-      }
-      })
+  } else {
+    res.status(404).send('This item is not yet in stock. Check back soon!');
+  }
+})
 
 
 
@@ -50,15 +50,17 @@ const shoes = [
   { name: "Fifty-Inch Heels", price: 175, type: "heel" }
 ];
 app.get('/shoes', (req, res) => {
-  const type = req.query.type;
-  const price = req.query.price;
+  const { 'min-price': minPrice, 'max-price': maxPrice, type } = req.query;
+
   const filteredShoes = shoes.filter(shoe => {
+    if (minPrice && shoe.price < Number(minPrice)) return false;
+    if (maxPrice && shoe.price > Number(maxPrice)) return false;
     if (type && shoe.type !== type) return false;
-    if (price && shoe.price !== price) return false;
     return true;
-    });
-    res.json(filteredShoes);
-    })
+  });
+
+  res.json(filteredShoes);
+});
 
 
 
