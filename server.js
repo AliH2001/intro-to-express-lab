@@ -50,7 +50,9 @@ const shoes = [
   { name: "Fifty-Inch Heels", price: 175, type: "heel" }
 ];
 app.get('/shoes', (req, res) => {
-  const { 'min-price': minPrice, 'max-price': maxPrice, type } = req.query;
+  const minPrice = req.query['min-price'];
+  const maxPrice = req.query['max-price'];
+  const type = req.query.type;
 
   const filteredShoes = shoes.filter(shoe => {
     if (minPrice && shoe.price < Number(minPrice)) return false;
