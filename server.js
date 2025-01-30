@@ -15,9 +15,15 @@ app.get('/greetings/:ali', (req, res) => {
 //-------------------- 2. Rolling the Dice-----------------------------------//
 
 app.get('/roll/:random', (req, res) => {
-  const random = Math.floor(Math.random() * req.params.random) + 1;
+  const randomInput = req.params.random;
+
+  if (isNaN(randomInput)) {
+    return res.send('Please provide a valid number.');
+  }
+
+  const random = Math.floor(Math.random() * randomInput) + 1;
   res.send(`You rolled a ${random}`);
-})
+});
 
 
 //--------------------3. I Want THAT One!-----------------------------------//
